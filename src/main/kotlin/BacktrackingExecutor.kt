@@ -15,4 +15,26 @@ class BacktrackingExecutor(private val problem: Problem) {
         }
         return null
     }
+
+    var counter = 0
+
+    fun countAll(): Int {
+        counter = 0
+        count(0)
+        return counter
+    }
+
+    private fun count(variableIndex: Int) {
+        if (variableIndex == problem.numberOfVariables) {
+            ++counter
+            return
+        }
+        for (value in problem.domains[variableIndex]) {
+            problem.setVariable(variableIndex, value)
+            if (problem.areConstrainsSatisfied(variableIndex, value)) {
+                count(variableIndex + 1)
+            }
+            problem.resetVariable(variableIndex, value)
+        }
+    }
 }
