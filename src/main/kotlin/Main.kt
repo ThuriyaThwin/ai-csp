@@ -1,3 +1,5 @@
+import kotlin.system.measureTimeMillis
+
 fun main(args: Array<String>) {
     serveUser()
 }
@@ -26,6 +28,9 @@ private fun isFirstMode(mode: String) = mode[0] in arrayOf('f', 'F')
 private fun printQueensResult(n: Int, first: Boolean) {
     val problem = QueensProblem(n)
     val executor = BacktrackingExecutor(problem)
-    val result: Any? = if (first) executor.findFirst() else executor.countAll()
-    println(result)
+    val method = if (first) executor::findFirst else executor::countAll
+    val time = measureTimeMillis {
+        println("result: ${method()}")
+    }
+    println("time: $time ms")
 }
