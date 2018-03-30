@@ -1,50 +1,49 @@
-typealias Board = Array<Array<Boolean>>
+class QueensProblem(n: Int) : Problem {
 
-class QueensProblem {
+    private val board = Array(n) { Array(n) { false } }
 
-    fun resultExists(n: Int): Boolean {
-        val board = Array(n) { Array(n) { false } }
-        return resultExists(board, n)
+    override val domains: List<Domain> = List(n) { List(n) { it + 1 } }
+
+    override val currentResult: String
+        get() = board.contentDeepToString()
+
+    override fun setVariable(variableIndex: Int, value: Int) {
+        board[value - 1][variableIndex] = true
     }
 
-    private fun resultExists(board: Board, n: Int): Boolean {
-        if (n == 0) return true
-        for (rowIndex in 0 until n) {
-            for (columnIndex in 0 until n) {
-                if (isAttacked(rowIndex, columnIndex, board)) continue
-                board[rowIndex][columnIndex] = true
-                if (resultExists(board, n - 1)) return true
-                board[rowIndex][columnIndex] = false
-            }
+    override fun resetVariable(variableIndex: Int, value: Int) {
+        board[value - 1][variableIndex] = false
+    }
+
+    override fun areConstrainsSatisfied(variableIndex: Int, value: Int): Boolean {
+        return !isAttacked(value - 1, variableIndex)
+    }
+
+    private fun isAttacked(rowIndex: Int, columnIndex: Int): Boolean {
+        if (isOtherQueenInRow(rowIndex, columnIndex)) return true
+        if (isOtherQueenInColumn(columnIndex, rowIndex)) return true
+        if (isOtherQueenInDiagonal(rowIndex, columnIndex)) return true
+        return false
+    }
+
+    private fun isOtherQueenInRow(rowIndex: Int, columnIndex: Int): Boolean {
+        for (otherColumnIndex in (0 until board.size) - columnIndex) {
+            if (board[rowIndex][otherColumnIndex]) return true
         }
         return false
     }
 
-    private fun isAttacked(rowIndex: Int, columnIndex: Int, board: Board): Boolean {
-        if (isQueenInRow(board, rowIndex)) return true
-        if (isQueenInColumn(board, columnIndex)) return true
-        if (isQueenInDiagonal(board, rowIndex, columnIndex)) return true
-        return false
-    }
-
-    private fun isQueenInRow(board: Board, rowIndex: Int): Boolean {
-        for (i in 0 until board.size) {
-            if (board[rowIndex][i]) return true
+    private fun isOtherQueenInColumn(columnIndex: Int, rowIndex: Int): Boolean {
+        for (otherRowIndex in (0 until board.size) - rowIndex) {
+            if (board[otherRowIndex][columnIndex]) return true
         }
         return false
     }
 
-    private fun isQueenInColumn(board: Board, columnIndex: Int): Boolean {
-        for (i in 0 until board.size) {
-            if (board[i][columnIndex]) return true
-        }
-        return false
-    }
-
-    private fun isQueenInDiagonal(board: Board, rowIndex: Int, columnIndex: Int): Boolean {
+    private fun isOtherQueenInDiagonal(rowIndex: Int, columnIndex: Int): Boolean {
         for (p in 0 until board.size) {
             for (q in 0 until board.size) {
-                if (board[p][q]) {
+                if (board[p][q] && (p != rowIndex || q != columnIndex)) {
                     if (p + q == rowIndex + columnIndex) return true
                     if (p - q == rowIndex - columnIndex) return true
                 }

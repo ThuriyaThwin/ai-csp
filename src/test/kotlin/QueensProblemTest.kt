@@ -2,21 +2,20 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 
-
 internal class QueensProblemTest {
-
-    private val problem = QueensProblem()
 
     @TestFactory
     fun testSquares() = listOf(
-            1 to true,
-            2 to false,
-            3 to false,
-            4 to true)
+            1 to "[[true]]",
+            2 to null,
+            3 to null,
+            4 to "[[false, false, true, false], [true, false, false, false], [false, false, false, true], [false, true, false, false]]")
             .map { (n, expected) ->
                 DynamicTest.dynamicTest("resultExists($n) gives $expected") {
-                    val resultExists = problem.resultExists(n)
-                    assertThat(resultExists).isEqualTo(expected)
+                    val problem = QueensProblem(n)
+                    val backtrackingExecutor = BacktrackingExecutor(problem)
+                    val result = backtrackingExecutor.findFirst()
+                    assertThat(result).isEqualTo(expected)
                 }
             }
 }

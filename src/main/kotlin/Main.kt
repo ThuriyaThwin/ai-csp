@@ -1,4 +1,5 @@
 fun main(args: Array<String>) {
-    val result = QueensProblem().resultExists(4)
-    println(result)
+    val problem = QueensProblem(4)
+    val result = BacktrackingExecutor(problem).findFirst()
+    print(result)
 }
