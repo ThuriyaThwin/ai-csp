@@ -5,7 +5,7 @@ class BacktrackingExecutor(private val problem: Problem) {
     }
 
     private fun findFirst(variableIndex: Int): String? {
-        if (variableIndex == problem.domains.size) {
+        if (variableIndex == problem.numberOfVariables) {
             return problem.currentResult
         }
         for (value in problem.domains[variableIndex]) {

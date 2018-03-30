@@ -1,8 +1,8 @@
-class QueensProblem(n: Int) : Problem {
+class QueensProblem(override val numberOfVariables: Int) : Problem {
 
-    private val board = Array(n) { Array(n) { false } }
+    private val board = Array(numberOfVariables) { Array(numberOfVariables) { false } }
 
-    override val domains: List<Domain> = List(n) { List(n) { it + 1 } }
+    override val domains: List<Domain> = List(numberOfVariables) { List(numberOfVariables) { it + 1 } }
 
     override val currentResult: String
         get() = board.contentDeepToString()
