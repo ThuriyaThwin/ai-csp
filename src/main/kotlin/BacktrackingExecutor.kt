@@ -1,8 +1,6 @@
 class BacktrackingExecutor(private val problem: Problem) {
 
-    fun findFirst(): String? {
-        return findFirst(0)
-    }
+    fun findFirst(): String? = findFirst(0)
 
     private fun findFirst(variableIndex: Int): String? {
         if (variableIndex == problem.numberOfVariables) {
