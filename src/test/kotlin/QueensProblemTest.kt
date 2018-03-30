@@ -9,7 +9,8 @@ internal class QueensProblemTest {
             1 to "[[true]]",
             2 to null,
             3 to null,
-            4 to "[[false, false, true, false], [true, false, false, false], [false, false, false, true], [false, true, false, false]]")
+            4 to "[[false, false, true, false], [true, false, false, false], [false, false, false, true], [false, true, false, false]]",
+            5 to "[[true, false, false, false, false], [false, false, false, true, false], [false, true, false, false, false], [false, false, false, false, true], [false, false, true, false, false]]")
             .map { (n, expected) ->
                 DynamicTest.dynamicTest("resultExists($n) gives $expected") {
                     val problem = QueensProblem(n)
