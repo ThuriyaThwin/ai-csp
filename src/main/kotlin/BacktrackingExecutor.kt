@@ -16,7 +16,7 @@ class BacktrackingExecutor(private val problem: Problem) {
         return null
     }
 
-    var counter = 0
+    private var counter: Int = 0
 
     fun countAll(): Int {
         counter = 0
