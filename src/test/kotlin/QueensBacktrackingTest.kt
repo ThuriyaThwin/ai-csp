@@ -26,7 +26,15 @@ internal class QueensBacktrackingTest {
             2 to 0,
             3 to 0,
             4 to 2,
-            5 to 10)
+            5 to 10,
+            6 to 4,
+            7 to 40,
+            8 to 92,
+            9 to 352,
+            10 to 724)
+//            11 to 2680,
+//            12 to 14200,
+//            13 to 73712)
             .map { (n, expected) ->
                 DynamicTest.dynamicTest("countAll() for QueenProblem($n) gives $expected") {
                     val problem = QueensProblem(n)
