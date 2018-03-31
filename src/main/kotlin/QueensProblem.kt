@@ -14,10 +14,6 @@ class QueensProblem(
         board[variableIndex] = value
     }
 
-    override fun resetVariable(variableIndex: Int, value: Int) {
-        board[variableIndex] = 0
-    }
-
     override fun areConstrainsSatisfied(variableIndex: Int, value: Int): Boolean {
         for (previousColumn in 0 until variableIndex) {
             if (board[previousColumn] == value) return false

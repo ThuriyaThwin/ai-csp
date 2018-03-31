@@ -1,32 +1,49 @@
 class LatinSquareProblem(
-        override val numberOfVariables: Int,
-        override val domains: List<Domain> = List(numberOfVariables) { List(numberOfVariables) { it + 1 } },
-        private val board: Array<Int> = Array(numberOfVariables) { 0 }
+        private val n: Int,
+        override val domains: List<Domain> = List(n * n) { List(n) { it + 1 } },
+        private val square: Array<Array<Int>> = Array(n) { Array(n) { 0 } }
 ) : Problem {
 
+    override val numberOfVariables = n * n
+
     override val currentResult: String
-        get() = board.contentDeepToString()
+        get() = square.contentDeepToString()
 
     override val someDomainEmpty: Boolean
         get() = domains.any { it.isEmpty() }
 
     override fun setVariable(variableIndex: Int, value: Int) {
-        board[variableIndex] = value
-    }
-
-    override fun resetVariable(variableIndex: Int, value: Int) {
-        board[variableIndex] = 0
+        square[variableIndex / n][variableIndex % n] = value
     }
 
     override fun areConstrainsSatisfied(variableIndex: Int, value: Int): Boolean {
-        for (previousColumn in 0 until variableIndex) {
-            if (board[previousColumn] == value) return false
-            if (variableIndex - previousColumn == Math.abs(value - board[previousColumn])) return false
-        }
-        return true
+        val rowIndex = variableIndex / n
+        val columnIndex = variableIndex % n
+        return !alreadyInRow(rowIndex, columnIndex, value) && !alreadyInColumn(rowIndex, columnIndex, value)
     }
 
-    override fun updateDomains(variableIndex: Int, value: Int): Problem {
+    private fun alreadyInRow(rowIndex: Int, columnIndex: Int, value: Int): Boolean {
+        for (previousColumns in 0 until columnIndex) {
+            if (square[rowIndex][previousColumns] == value) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun alreadyInColumn(rowIndex: Int, columnIndex: Int, value: Int): Boolean {
+        for (previousRow in 0 until rowIndex) {
+            if (square[previousRow][columnIndex] == value) {
+                return true
+            }
+        }
+        return false
+    }
+
+    override fun updateDomains(variableIndex: Int, value: Int): Problem { // todo:
+        val rowIndex = variableIndex / n
+        val columnIndex = variableIndex % n
+//        updateDomainsInRow(rowIndex)
         val newDomains = domains.toMutableList()
         var increment = 1
         for (columnIndex in (variableIndex + 1) until numberOfVariables) {
@@ -35,6 +52,6 @@ class LatinSquareProblem(
             newDomains[columnIndex] = newDomains[columnIndex] - (value - increment)
             ++increment
         }
-        return QueensProblem(numberOfVariables, newDomains, board) // todo: Clone?
+        return LatinSquareProblem(n, newDomains, square) // todo: Clone?
     }
 }
