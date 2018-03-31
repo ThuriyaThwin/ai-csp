@@ -1,10 +1,8 @@
-import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.TestFactory
+internal class QueensProblemIntegrationTest : CspAbstractTest() {
 
-internal class QueensProblemIntegrationTest {
+    override val problemInitializer: (Int) -> Problem = { QueensProblem(it) }
 
-    private val firstResults = listOf(
+    override val firstResults = listOf(
             1 to "[1]",
             2 to null,
             3 to null,
@@ -12,23 +10,7 @@ internal class QueensProblemIntegrationTest {
             5 to "[1, 3, 5, 2, 4]"
     )
 
-    @TestFactory
-    fun `findFirst() via backtracking`() = testFindFirst { BacktrackingExecutor(it) }
-
-    @TestFactory
-    fun `findFirst() via forward checking`() = testFindFirst { ForwardCheckingExecutor(it) }
-
-    private fun testFindFirst(executorInitializer: (Problem) -> CspExecutor) =
-            firstResults.map { (n, expected) ->
-                DynamicTest.dynamicTest("for QueenProblem($n) gives $expected") {
-                    val problem = QueensProblem(n)
-                    val executor = executorInitializer(problem)
-                    val result = executor.findFirst()
-                    assertThat(result).isEqualTo(expected)
-                }
-            }
-
-    private val allResultsCounts = listOf(
+    override val allResultsCounts = listOf(
             1 to 1,
             2 to 0,
             3 to 0,
@@ -43,20 +25,4 @@ internal class QueensProblemIntegrationTest {
 //            12 to 14200,
 //            13 to 73712
     )
-
-    @TestFactory
-    fun `countAll() via backtracking`() = testCountAll { BacktrackingExecutor(it) }
-
-    @TestFactory
-    fun `countAll() via forward checking`() = testCountAll { ForwardCheckingExecutor(it) }
-
-    private fun testCountAll(executorInitializer: (Problem) -> CspExecutor) =
-            allResultsCounts.map { (n, expected) ->
-                DynamicTest.dynamicTest("for QueenProblem($n) gives $expected") {
-                    val problem = QueensProblem(n)
-                    val executor = executorInitializer(problem)
-                    val result = executor.countAll()
-                    assertThat(result).isEqualTo(expected)
-                }
-            }
 }
