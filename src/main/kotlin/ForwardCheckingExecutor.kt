@@ -1,4 +1,4 @@
-class ForwardCheckingExecutor : CspExecutor {
+class ForwardCheckingExecutor(private val problem: Problem) : CspExecutor {
 
     override fun findFirst(): String? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

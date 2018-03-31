@@ -2,20 +2,28 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 
-internal class QueensBacktrackingTest {
+internal class QueensProblemIntegrationTest {
 
-    @TestFactory
-    fun findFirst() = listOf(
+    private val firstResults = listOf(
             1 to "[[true]]",
             2 to null,
             3 to null,
             4 to "[[false, false, true, false], [true, false, false, false], [false, false, false, true], [false, true, false, false]]",
-            5 to "[[true, false, false, false, false], [false, false, false, true, false], [false, true, false, false, false], [false, false, false, false, true], [false, false, true, false, false]]")
-            .map { (n, expected) ->
-                DynamicTest.dynamicTest("findFirst() for QueenProblem($n) gives $expected") {
+            5 to "[[true, false, false, false, false], [false, false, false, true, false], [false, true, false, false, false], [false, false, false, false, true], [false, false, true, false, false]]"
+    )
+
+    @TestFactory
+    fun `findFirst() via backtracking`() = testFindFirst { BacktrackingExecutor(it) }
+
+    @TestFactory
+    fun `findFirst() via forward checking`() = testFindFirst { ForwardCheckingExecutor(it) }
+
+    private fun testFindFirst(executorInitializer: (Problem) -> CspExecutor) =
+            firstResults.map { (n, expected) ->
+                DynamicTest.dynamicTest("for QueenProblem($n) gives $expected") {
                     val problem = QueensProblem(n)
-                    val backtrackingExecutor = BacktrackingExecutor(problem)
-                    val result = backtrackingExecutor.findFirst()
+                    val executor = executorInitializer(problem)
+                    val result = executor.findFirst()
                     assertThat(result).isEqualTo(expected)
                 }
             }
