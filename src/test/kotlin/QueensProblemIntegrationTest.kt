@@ -28,8 +28,7 @@ internal class QueensProblemIntegrationTest {
                 }
             }
 
-    @TestFactory
-    fun countAll() = listOf(
+    private val allResultsCounts = listOf(
             1 to 1,
             2 to 0,
             3 to 0,
@@ -39,15 +38,24 @@ internal class QueensProblemIntegrationTest {
             7 to 40,
             8 to 92,
             9 to 352,
-            10 to 724)
+            10 to 724
 //            11 to 2680,
 //            12 to 14200,
-//            13 to 73712)
-            .map { (n, expected) ->
-                DynamicTest.dynamicTest("countAll() for QueenProblem($n) gives $expected") {
+//            13 to 73712
+    )
+
+    @TestFactory
+    fun `countAll() via backtracking`() = testCountAll { BacktrackingExecutor(it) }
+
+    @TestFactory
+    fun `countAll() via forward checking`() = testCountAll { ForwardCheckingExecutor(it) }
+
+    private fun testCountAll(executorInitializer: (Problem) -> CspExecutor) =
+            allResultsCounts.map { (n, expected) ->
+                DynamicTest.dynamicTest("for QueenProblem($n) gives $expected") {
                     val problem = QueensProblem(n)
-                    val backtrackingExecutor = BacktrackingExecutor(problem)
-                    val result = backtrackingExecutor.countAll()
+                    val executor = executorInitializer(problem)
+                    val result = executor.countAll()
                     assertThat(result).isEqualTo(expected)
                 }
             }
