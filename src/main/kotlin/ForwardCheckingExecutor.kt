@@ -23,7 +23,32 @@ class ForwardCheckingExecutor(private val problem: Problem) : CspExecutor {
         return null
     }
 
+    private var counter: Int = 0
+
     override fun countAll(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        counter = 0
+        count(0)
+        return counter
+    }
+
+    private fun count(variableIndex: Int) {
+        if (variableIndex == problem.numberOfVariables) {
+            ++counter
+        } else {
+            checkSubsequentValues(variableIndex)
+        }
+    }
+
+    private fun checkSubsequentValues(variableIndex: Int) {
+        for (value in problem.domains[variableIndex]) {
+            checkValue(variableIndex, value)
+        }
+    }
+
+    private fun checkValue(variableIndex: Int, value: Int) {
+        problem.setVariable(variableIndex, value)
+        if (problem.areConstrainsSatisfied(variableIndex, value)) {
+            count(variableIndex + 1)
+        }
     }
 }

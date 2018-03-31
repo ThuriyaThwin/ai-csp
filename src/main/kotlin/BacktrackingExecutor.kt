@@ -23,28 +23,29 @@ class BacktrackingExecutor(private val problem: Problem) : CspExecutor {
 
     override fun countAll(): Int {
         counter = 0
-        count(0)
+        count(0, problem)
         return counter
     }
 
-    private fun count(variableIndex: Int) {
-        if (variableIndex == problem.numberOfVariables) {
+    private fun count(variableIndex: Int, problem: Problem) {
+        if (variableIndex == this.problem.numberOfVariables) {
             ++counter
         } else {
-            checkSubsequentValues(variableIndex)
+            checkSubsequentValues(variableIndex, problem)
         }
     }
 
-    private fun checkSubsequentValues(variableIndex: Int) {
+    private fun checkSubsequentValues(variableIndex: Int, problem: Problem) {
         for (value in problem.domains[variableIndex]) {
-            checkValue(variableIndex, value)
+            checkValue(variableIndex, value, problem)
         }
     }
 
-    private fun checkValue(variableIndex: Int, value: Int) {
+    private fun checkValue(variableIndex: Int, value: Int, problem: Problem) {
         problem.setVariable(variableIndex, value)
-        if (problem.areConstrainsSatisfied(variableIndex, value)) {
-            count(variableIndex + 1)
+        val newProblem = problem.updateDomains(variableIndex, value)
+        if (!problem.someDomainEmpty) {
+            count(variableIndex + 1, newProblem)
         }
     }
 }
