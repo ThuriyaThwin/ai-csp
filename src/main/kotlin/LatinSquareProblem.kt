@@ -1,6 +1,6 @@
 class LatinSquareProblem(
         private val n: Int,
-        override val domains: List<Domain> = List(n * n) { List(n) { it + 1 } },
+        private val domains: List<Domain> = List(n * n) { List(n) { it + 1 } },
         private val square: Array<Array<Int>> = Array(n) { Array(n) { 0 } }
 ) : Problem {
 

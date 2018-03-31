@@ -1,6 +1,5 @@
 interface Problem {
     val numberOfVariables: Int
-    val domains: List<Domain>
     val currentResult: String
     val someDomainEmpty: Boolean
 

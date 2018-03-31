@@ -1,6 +1,6 @@
 class QueensProblem(
         override val numberOfVariables: Int,
-        override val domains: List<Domain> = List(numberOfVariables) { List(numberOfVariables) { it + 1 } },
+        private val domains: List<Domain> = List(numberOfVariables) { List(numberOfVariables) { it + 1 } },
         private val board: Array<Int> = Array(numberOfVariables) { 0 }
 ) : Problem {
 
