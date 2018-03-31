@@ -3,12 +3,12 @@ var c = IntArray(0)
 var first = ""
  
 fun nQueens(row: Int, n: Int) {
-    outer@ for (x in 1..n) {
-        for (y in 1 until row) {
-            if (c[y] == x) continue@outer
-            if (row - y == Math.abs(x - c[y])) continue@outer           
+    outer@ for (candidate in 1..n) {
+        for (previousRow in 1 until row) {
+            if (c[previousRow] == candidate) continue@outer
+            if (row - previousRow == Math.abs(candidate - c[previousRow])) continue@outer
         }
-        c[row] = x
+        c[row] = candidate
         if (row < n) nQueens(row + 1, n)
         else if (++count == 1) first = c.drop(1).map { it - 1 }.toString()
     }

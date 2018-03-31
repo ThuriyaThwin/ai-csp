@@ -1,6 +1,6 @@
 class QueensProblem(override val numberOfVariables: Int) : Problem {
 
-    private val board = Array(numberOfVariables) { Array(numberOfVariables) { false } }
+    private val board = Array(numberOfVariables) { 0 }
 
     override val domains: List<Domain> = List(numberOfVariables) { List(numberOfVariables) { it + 1 } }
 
@@ -8,47 +8,22 @@ class QueensProblem(override val numberOfVariables: Int) : Problem {
         get() = board.contentDeepToString()
 
     override fun setVariable(variableIndex: Int, value: Int) {
-        board[value - 1][variableIndex] = true
+        board[variableIndex] = value
     }
 
     override fun resetVariable(variableIndex: Int, value: Int) {
-        board[value - 1][variableIndex] = false
+        board[variableIndex] = 0
     }
 
     override fun areConstrainsSatisfied(variableIndex: Int, value: Int): Boolean {
-        return !isAttacked(value - 1, variableIndex)
-    }
-
-    private fun isAttacked(rowIndex: Int, columnIndex: Int): Boolean {
-        if (isOtherQueenInRow(rowIndex, columnIndex)) return true
-        if (isOtherQueenInColumn(columnIndex, rowIndex)) return true
-        if (isOtherQueenInDiagonal(rowIndex, columnIndex)) return true
-        return false
-    }
-
-    private fun isOtherQueenInRow(rowIndex: Int, columnIndex: Int): Boolean {
-        for (otherColumnIndex in (0 until board.size) - columnIndex) {
-            if (board[rowIndex][otherColumnIndex]) return true
+        for (previousColumn in 0 until variableIndex) {
+            if (board[previousColumn] == value) return false
+            if (variableIndex - previousColumn == Math.abs(value - board[previousColumn])) return false
         }
-        return false
+        return true
     }
 
-    private fun isOtherQueenInColumn(columnIndex: Int, rowIndex: Int): Boolean {
-        for (otherRowIndex in (0 until board.size) - rowIndex) {
-            if (board[otherRowIndex][columnIndex]) return true
-        }
-        return false
-    }
-
-    private fun isOtherQueenInDiagonal(rowIndex: Int, columnIndex: Int): Boolean {
-        for (p in 0 until board.size) {
-            for (q in 0 until board.size) {
-                if (board[p][q] && (p != rowIndex || q != columnIndex)) {
-                    if (p + q == rowIndex + columnIndex) return true
-                    if (p - q == rowIndex - columnIndex) return true
-                }
-            }
-        }
-        return false
+    override fun updateDomains(variableIndex: Int, value: Int): Problem {
+        TODO()
     }
 }

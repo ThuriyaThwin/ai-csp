@@ -5,11 +5,11 @@ import org.junit.jupiter.api.TestFactory
 internal class QueensProblemIntegrationTest {
 
     private val firstResults = listOf(
-            1 to "[[true]]",
+            1 to "[1]",
             2 to null,
             3 to null,
-            4 to "[[false, false, true, false], [true, false, false, false], [false, false, false, true], [false, true, false, false]]",
-            5 to "[[true, false, false, false, false], [false, false, false, true, false], [false, true, false, false, false], [false, false, false, false, true], [false, false, true, false, false]]"
+            4 to "[2, 4, 1, 3]",
+            5 to "[1, 3, 5, 2, 4]"
     )
 
     @TestFactory
@@ -38,8 +38,8 @@ internal class QueensProblemIntegrationTest {
             7 to 40,
             8 to 92,
             9 to 352,
-            10 to 724
-//            11 to 2680,
+            10 to 724,
+            11 to 2680
 //            12 to 14200,
 //            13 to 73712
     )
