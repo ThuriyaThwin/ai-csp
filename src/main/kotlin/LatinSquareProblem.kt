@@ -12,6 +12,8 @@ class LatinSquareProblem(
     override val someDomainEmpty: Boolean
         get() = domains.any { it.isEmpty() }
 
+    override fun domainOfVariable(variableIndex: Int): Domain = domains[variableIndex]
+
     override fun setVariable(variableIndex: Int, value: Int) {
         square[variableIndex / n][variableIndex % n] = value
     }
@@ -43,7 +45,7 @@ class LatinSquareProblem(
     override fun updateDomains(variableIndex: Int, value: Int): Problem { // todo:
         val rowIndex = variableIndex / n
         val columnIndex = variableIndex % n
-//        updateDomainsInRow(rowIndex)
+        updateDomainsInRow(rowIndex)
         val newDomains = domains.toMutableList()
         var increment = 1
         for (columnIndex in (variableIndex + 1) until numberOfVariables) {
@@ -53,5 +55,9 @@ class LatinSquareProblem(
             ++increment
         }
         return LatinSquareProblem(n, newDomains, square) // todo: Clone?
+    }
+
+    private fun updateDomainsInRow(rowIndex: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

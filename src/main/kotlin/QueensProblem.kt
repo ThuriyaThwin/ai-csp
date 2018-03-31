@@ -14,6 +14,8 @@ class QueensProblem(
         board[variableIndex] = value
     }
 
+    override fun domainOfVariable(variableIndex: Int): Domain = domains[variableIndex]
+
     override fun areConstrainsSatisfied(variableIndex: Int, value: Int): Boolean {
         for (previousColumn in 0 until variableIndex) {
             if (board[previousColumn] == value) return false

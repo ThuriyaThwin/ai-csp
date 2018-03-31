@@ -7,8 +7,8 @@ internal class QueensProblemTest {
     fun updateDomains() {
         val problem = QueensProblem(1)
         val newProblem = problem.updateDomains(0, 1)
-        val newDomains = newProblem.domains
-        val expectedDomains = listOf(listOf(1))
-        assertThat(newDomains).isEqualTo(expectedDomains)
+        val newDomain = newProblem.domainOfVariable(0)
+        val expectedDomain = listOf(1)
+        assertThat(newDomain).isEqualTo(expectedDomain)
     }
 }

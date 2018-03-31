@@ -10,7 +10,7 @@ class BacktrackingExecutor(private val problem: Problem) : CspExecutor {
             }
 
     private fun searchInSubsequentValues(variableIndex: Int): String? {
-        for (value in problem.domains[variableIndex]) {
+        for (value in problem.domainOfVariable(variableIndex)) {
             problem.setVariable(variableIndex, value)
             if (problem.areConstrainsSatisfied(variableIndex, value)) {
                 findFirst(variableIndex + 1)?.let { return it }
@@ -36,7 +36,7 @@ class BacktrackingExecutor(private val problem: Problem) : CspExecutor {
     }
 
     private fun checkSubsequentValues(variableIndex: Int) {
-        for (value in problem.domains[variableIndex]) {
+        for (value in problem.domainOfVariable(variableIndex)) {
             checkValue(variableIndex, value)
         }
     }
