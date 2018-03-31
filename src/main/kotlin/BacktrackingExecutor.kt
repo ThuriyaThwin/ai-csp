@@ -1,6 +1,6 @@
-class BacktrackingExecutor(private val problem: Problem) {
+class BacktrackingExecutor(private val problem: Problem): CspExecutor {
 
-    fun findFirst(): String? = findFirst(0)
+    override fun findFirst(): String? = findFirst(0)
 
     private fun findFirst(variableIndex: Int): String? {
         if (variableIndex == problem.numberOfVariables) {
@@ -18,7 +18,7 @@ class BacktrackingExecutor(private val problem: Problem) {
 
     private var counter: Int = 0
 
-    fun countAll(): Int {
+    override fun countAll(): Int {
         counter = 0
         count(0)
         return counter
