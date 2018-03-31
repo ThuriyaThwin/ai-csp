@@ -1,11 +1,14 @@
-class QueensProblem(override val numberOfVariables: Int) : Problem {
-
-    private val board = Array(numberOfVariables) { 0 }
-
-    override val domains: List<Domain> = List(numberOfVariables) { List(numberOfVariables) { it + 1 } }
+class QueensProblem(
+        override val numberOfVariables: Int,
+        override val domains: List<Domain> = List(numberOfVariables) { List(numberOfVariables) { it + 1 } },
+        private val board: Array<Int> = Array(numberOfVariables) { 0 }
+) : Problem {
 
     override val currentResult: String
         get() = board.contentDeepToString()
+
+    override val someDomainEmpty: Boolean
+        get() = domains.any { it.isEmpty() }
 
     override fun setVariable(variableIndex: Int, value: Int) {
         board[variableIndex] = value
@@ -24,6 +27,14 @@ class QueensProblem(override val numberOfVariables: Int) : Problem {
     }
 
     override fun updateDomains(variableIndex: Int, value: Int): Problem {
-        TODO()
+        val newDomains = domains.toMutableList()
+        var increment = 1
+        for (columnIndex in (variableIndex + 1) until numberOfVariables) {
+            newDomains[columnIndex] = newDomains[columnIndex] - value
+            newDomains[columnIndex] = newDomains[columnIndex] - (value + increment)
+            newDomains[columnIndex] = newDomains[columnIndex] - (value - increment)
+            ++increment
+        }
+        return QueensProblem(numberOfVariables, newDomains, board) // todo: Clone?
     }
 }
