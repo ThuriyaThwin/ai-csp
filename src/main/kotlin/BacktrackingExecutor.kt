@@ -1,17 +1,20 @@
-class BacktrackingExecutor(private val problem: Problem): CspExecutor {
+class BacktrackingExecutor(private val problem: Problem) : CspExecutor {
 
     override fun findFirst(): String? = findFirst(0)
 
-    private fun findFirst(variableIndex: Int): String? {
-        if (variableIndex == problem.numberOfVariables) {
-            return problem.currentResult
-        }
+    private fun findFirst(variableIndex: Int): String? =
+            if (variableIndex == problem.numberOfVariables) {
+                problem.currentResult
+            } else {
+                searchInSubsequentValues(variableIndex)
+            }
+
+    private fun searchInSubsequentValues(variableIndex: Int): String? {
         for (value in problem.domains[variableIndex]) {
             problem.setVariable(variableIndex, value)
             if (problem.areConstrainsSatisfied(variableIndex, value)) {
                 findFirst(variableIndex + 1)?.let { return it }
             }
-            problem.resetVariable(variableIndex, value)
         }
         return null
     }
@@ -27,14 +30,21 @@ class BacktrackingExecutor(private val problem: Problem): CspExecutor {
     private fun count(variableIndex: Int) {
         if (variableIndex == problem.numberOfVariables) {
             ++counter
-            return
+        } else {
+            checkSubsequentValues(variableIndex)
         }
+    }
+
+    private fun checkSubsequentValues(variableIndex: Int) {
         for (value in problem.domains[variableIndex]) {
-            problem.setVariable(variableIndex, value)
-            if (problem.areConstrainsSatisfied(variableIndex, value)) {
-                count(variableIndex + 1)
-            }
-            problem.resetVariable(variableIndex, value)
+            checkValue(variableIndex, value)
+        }
+    }
+
+    private fun checkValue(variableIndex: Int, value: Int) {
+        problem.setVariable(variableIndex, value)
+        if (problem.areConstrainsSatisfied(variableIndex, value)) {
+            count(variableIndex + 1)
         }
     }
 }
