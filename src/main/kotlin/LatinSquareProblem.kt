@@ -1,6 +1,6 @@
 class LatinSquareProblem(
         private val n: Int,
-        private val domains: List<Domain> = List(n * n) { List(n) { it + 1 } },
+        private val domains: List<List<Domain>> = List(n) { List(n) { List(n) { it + 1 } } },
         private val square: Array<Array<Int>> = Array(n) { Array(n) { 0 } }
 ) : Problem {
 
@@ -12,7 +12,11 @@ class LatinSquareProblem(
     override val someDomainEmpty: Boolean
         get() = domains.any { it.isEmpty() }
 
-    override fun domainOfVariable(variableIndex: Int): Domain = domains[variableIndex]
+    override fun domainOfVariable(variableIndex: Int): Domain {
+        val rowIndex = variableIndex / n
+        val columnIndex = variableIndex % n
+        return domains[rowIndex][columnIndex]
+    }
 
     override fun setVariable(variableIndex: Int, value: Int) {
         square[variableIndex / n][variableIndex % n] = value
@@ -45,19 +49,21 @@ class LatinSquareProblem(
     override fun updateDomains(variableIndex: Int, value: Int): Problem { // todo:
         val rowIndex = variableIndex / n
         val columnIndex = variableIndex % n
-        updateDomainsInRow(rowIndex)
         val newDomains = domains.toMutableList()
-        var increment = 1
-        for (columnIndex in (variableIndex + 1) until numberOfVariables) {
-            newDomains[columnIndex] = newDomains[columnIndex] - value
-            newDomains[columnIndex] = newDomains[columnIndex] - (value + increment)
-            newDomains[columnIndex] = newDomains[columnIndex] - (value - increment)
-            ++increment
-        }
-        return LatinSquareProblem(n, newDomains, square) // todo: Clone?
+        newDomains[rowIndex] = newDomainsInRow(rowIndex, value)
+        val newDomains2 = updateDomainsInColumn(columnIndex, value, newDomains)
+        return LatinSquareProblem(n, newDomains2, square) // todo: Clone?
     }
 
-    private fun updateDomainsInRow(rowIndex: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    private fun updateDomainsInColumn(columnIndex: Int, value: Int, newDomains: List<List<Domain>>) =
+            newDomains.map { updateRow(it, columnIndex, value) }
+
+    private fun updateRow(row: List<Domain>, columnIndex: Int, value: Int): List<Domain> =
+            row.mapIndexed { index, domain ->
+                if (index == columnIndex) {
+                    domain - value
+                } else domain
+            }
+
+    private fun newDomainsInRow(rowIndex: Int, valueToRemove: Int) = domains[rowIndex].map { it - valueToRemove }
 }
