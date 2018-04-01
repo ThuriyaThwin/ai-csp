@@ -1,17 +1,19 @@
 class QueensProblem(
         override val numberOfVariables: Int,
         private val domains: List<Domain> = List(numberOfVariables) { List(numberOfVariables) { it + 1 } },
-        private val board: Array<Int> = Array(numberOfVariables) { 0 }
+        private val board: List<Int> = List(numberOfVariables) { 0 }
 ) : Problem {
 
     override val currentResult: String
-        get() = board.contentDeepToString()
+        get() = board.toString()
 
     override val someDomainEmpty: Boolean
         get() = domains.any { it.isEmpty() }
 
-    override fun setVariable(variableIndex: Int, value: Int) {
-        board[variableIndex] = value
+    override fun setVariable(variableIndex: Int, value: Int): Problem {
+        val mutableList = board.toMutableList()
+        mutableList[variableIndex] = value
+        return QueensProblem(numberOfVariables, domains, mutableList)
     }
 
     override fun domainOfVariable(variableIndex: Int): Domain = domains[variableIndex]

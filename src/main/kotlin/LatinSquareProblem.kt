@@ -1,13 +1,13 @@
 class LatinSquareProblem(
         private val n: Int,
         private val domains: List<List<Domain>> = List(n) { List(n) { List(n) { it + 1 } } },
-        private val square: Array<Array<Int>> = Array(n) { Array(n) { 0 } }
+        private val square: List<List<Int>> = List(n) { List(n) { 0 } }
 ) : Problem {
 
     override val numberOfVariables = n * n
 
     override val currentResult: String
-        get() = square.contentDeepToString()
+        get() = square.toString()
 
     override val someDomainEmpty: Boolean
         get() = domains.any { it.isEmpty() }
@@ -18,8 +18,10 @@ class LatinSquareProblem(
         return domains[rowIndex][columnIndex]
     }
 
-    override fun setVariable(variableIndex: Int, value: Int) {
-        square[variableIndex / n][variableIndex % n] = value
+    override fun setVariable(variableIndex: Int, value: Int): Problem {
+        val mutableSquare = square.map { it.toMutableList() }.toMutableList()
+        mutableSquare[variableIndex / n][variableIndex % n] = value
+        return LatinSquareProblem(n, domains, mutableSquare)
     }
 
     override fun areConstrainsSatisfied(variableIndex: Int, value: Int): Boolean {

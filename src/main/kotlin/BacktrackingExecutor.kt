@@ -4,20 +4,20 @@ class BacktrackingExecutor(private val problem: Problem) : CspExecutor {
         println("Backtracking: ")
     }
 
-    override fun findFirst(): String? = findFirst(0)
+    override fun findFirst(): String? = findFirst(0, problem)
 
-    private fun findFirst(variableIndex: Int): String? =
+    private fun findFirst(variableIndex: Int, problem: Problem): String? =
             if (variableIndex == problem.numberOfVariables) {
                 problem.currentResult
             } else {
-                searchInSubsequentValues(variableIndex)
+                searchInSubsequentValues(variableIndex, problem)
             }
 
-    private fun searchInSubsequentValues(variableIndex: Int): String? {
+    private fun searchInSubsequentValues(variableIndex: Int, problem: Problem): String? {
         for (value in problem.domainOfVariable(variableIndex)) {
-            problem.setVariable(variableIndex, value)
-            if (problem.areConstrainsSatisfied(variableIndex, value)) {
-                findFirst(variableIndex + 1)?.let { return it }
+            val newProblem = problem.setVariable(variableIndex, value)
+            if (newProblem.areConstrainsSatisfied(variableIndex, value)) {
+                findFirst(variableIndex + 1, newProblem)?.let { return it }
             }
         }
         return null
@@ -27,28 +27,28 @@ class BacktrackingExecutor(private val problem: Problem) : CspExecutor {
 
     override fun countAll(): Int {
         counter = 0
-        count(0)
+        count(0, problem)
         return counter
     }
 
-    private fun count(variableIndex: Int) {
+    private fun count(variableIndex: Int, problem: Problem) {
         if (variableIndex == problem.numberOfVariables) {
             ++counter
         } else {
-            checkSubsequentValues(variableIndex)
+            checkSubsequentValues(variableIndex, problem)
         }
     }
 
-    private fun checkSubsequentValues(variableIndex: Int) {
+    private fun checkSubsequentValues(variableIndex: Int, problem: Problem) {
         for (value in problem.domainOfVariable(variableIndex)) {
-            checkValue(variableIndex, value)
+            checkValue(variableIndex, value, problem)
         }
     }
 
-    private fun checkValue(variableIndex: Int, value: Int) {
-        problem.setVariable(variableIndex, value)
-        if (problem.areConstrainsSatisfied(variableIndex, value)) {
-            count(variableIndex + 1)
+    private fun checkValue(variableIndex: Int, value: Int, problem: Problem) {
+        val newProblem = problem.setVariable(variableIndex, value)
+        if (newProblem.areConstrainsSatisfied(variableIndex, value)) {
+            count(variableIndex + 1, newProblem)
         }
     }
 }

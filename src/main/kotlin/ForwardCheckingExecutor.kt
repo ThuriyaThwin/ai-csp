@@ -17,9 +17,9 @@ class ForwardCheckingExecutor(private val problem: Problem) : CspExecutor {
 
     private fun searchInSubsequentValues(problem: Problem, variableIndex: Int): String? {
         for (value in problem.domainOfVariable(variableIndex)) {
-            problem.setVariable(variableIndex, value)
-            val newProblem = problem.updateDomains(variableIndex, value)
-            if (!problem.someDomainEmpty) {
+            val updatedProblem = problem.setVariable(variableIndex, value)
+            val newProblem = updatedProblem.updateDomains(variableIndex, value)
+            if (!newProblem.someDomainEmpty) {
                 val result = findFirst(variableIndex + 1, newProblem)
                 result?.let { return it }
             }
