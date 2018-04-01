@@ -21,5 +21,6 @@ class ForwardCheckingExecutor(problem: Problem) : CspExecutor(problem) {
         if (!problem.someDomainEmpty) {
             count(variableIndex + 1, newProblem)
         }
+        ++operationsCount
     }
 }

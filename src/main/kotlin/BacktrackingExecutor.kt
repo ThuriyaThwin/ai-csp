@@ -8,7 +8,7 @@ class BacktrackingExecutor(problem: Problem) : CspExecutor(problem) {
         for (value in problem.domainOfVariable(variableIndex)) {
             val newProblem = problem.setVariable(variableIndex, value)
             if (newProblem.areConstrainsSatisfied(variableIndex, value)) {
-                findFirst(variableIndex + 1, newProblem)?.let { return it }
+                findFirst(variableIndex + 1, newProblem)?.let { return it } ?: ++operationsCount
             }
         }
         return null
@@ -19,5 +19,6 @@ class BacktrackingExecutor(problem: Problem) : CspExecutor(problem) {
         if (newProblem.areConstrainsSatisfied(variableIndex, value)) {
             count(variableIndex + 1, newProblem)
         }
+        ++operationsCount
     }
 }
