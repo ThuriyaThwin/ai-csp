@@ -1,5 +1,9 @@
 class BacktrackingExecutor(private val problem: Problem) : CspExecutor {
 
+    override fun printName() {
+        println("Backtracking: ")
+    }
+
     override fun findFirst(): String? = findFirst(0)
 
     private fun findFirst(variableIndex: Int): String? =

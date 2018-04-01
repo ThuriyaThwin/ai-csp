@@ -1,5 +1,9 @@
 class ForwardCheckingExecutor(private val problem: Problem) : CspExecutor {
 
+    override fun printName() {
+        println("Forward checking: ")
+    }
+
     override fun findFirst(): String? {
         return findFirst(0, problem)
     }

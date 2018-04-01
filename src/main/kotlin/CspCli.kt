@@ -12,20 +12,35 @@ class CspCli {
     }
 
     private fun tryToServeUser() {
-        println("Usage: n first/all")
+        println("Usage: queens/square n first/all")
         val line = readLine()!!.split(' ')
-        val n = line[0].toInt()
-        val mode = line[1]
-        val first = isFirstMode(mode)
-        printQueensResult(n, first)
+        val (problemName, nString, mode) = line
+        val problem = problem(problemName, nString)
+        val ifFirst = isFirstMode(mode)
+        printResults(problem, ifFirst)
         serveUser()
     }
 
     private fun isFirstMode(mode: String) = mode[0] in arrayOf('f', 'F')
 
-    private fun printQueensResult(n: Int, first: Boolean) {
-        val problem = QueensProblem(n)
-        val executor = BacktrackingExecutor(problem)
+    private fun problem(problemName: String, nString: String): Problem {
+        val firstLetter = problemName[0]
+        val n = nString.toInt()
+        return when (firstLetter) {
+            'q', 'Q' -> QueensProblem(n)
+            else -> LatinSquareProblem(n)
+        }
+    }
+
+    private fun printResults(problem: Problem, first: Boolean) {
+        val backtrackingExecutor = BacktrackingExecutor(problem)
+        printResult(backtrackingExecutor, first) // todo: problem immutable?
+        val forwardCheckingExecutor = ForwardCheckingExecutor(problem)
+        printResult(forwardCheckingExecutor, first)
+    }
+
+    private fun printResult(executor: CspExecutor, first: Boolean) {
+        executor.printName()
         val method = if (first) executor::findFirst else executor::countAll
         val time = measureTimeMillis {
             println("result: ${method()}")
