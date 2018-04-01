@@ -46,5 +46,6 @@ class CspCli {
             println("result: ${method()}")
         }
         println("time: $time ms")
+        println("operations count: ${executor.operationsCount}")
     }
 }

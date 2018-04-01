@@ -1,27 +1,37 @@
 abstract class CspExecutor(protected val problem: Problem) {
 
-    fun findFirst(): String? = findFirst(0, problem)
+    var operationsCount: Int = 0
+        protected set
 
-    protected fun findFirst(variableIndex: Int, problem: Problem): String? =
-            if (variableIndex == problem.numberOfVariables) {
-                problem.currentResult
-            } else {
-                searchInSubsequentValues(variableIndex, problem)
-            }
+    fun findFirst(): String? {
+        operationsCount = 0
+        return findFirst(0, problem)
+    }
+
+    protected fun findFirst(variableIndex: Int, problem: Problem): String? {
+        ++operationsCount
+        return if (variableIndex == problem.numberOfVariables) {
+            problem.currentResult
+        } else {
+            searchInSubsequentValues(variableIndex, problem)
+        }
+    }
 
     protected abstract fun searchInSubsequentValues(variableIndex: Int, problem: Problem): String?
 
-    private var counter: Int = 0
+    private var resultsCount: Int = 0
 
     fun countAll(): Int {
-        counter = 0
+        resultsCount = 0
+        operationsCount = 0
         count(0, problem)
-        return counter
+        return resultsCount
     }
 
     protected fun count(variableIndex: Int, problem: Problem) {
+        ++operationsCount
         if (variableIndex == problem.numberOfVariables) {
-            ++counter
+            ++resultsCount
         } else {
             checkSubsequentValues(variableIndex, problem)
         }
