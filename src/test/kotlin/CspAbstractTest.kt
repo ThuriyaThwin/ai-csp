@@ -16,7 +16,7 @@ internal abstract class CspAbstractTest {
 
     private fun testFindFirst(executorInitializer: (Problem) -> CspExecutor) =
             firstResults.map { (n, expected) ->
-                DynamicTest.dynamicTest("for QueenProblem($n) gives $expected") {
+                DynamicTest.dynamicTest("for n=$n gives $expected") {
                     val problem = problemInitializer(n)
                     val executor = executorInitializer(problem)
                     val result = executor.findFirst()
@@ -32,7 +32,7 @@ internal abstract class CspAbstractTest {
 
     private fun testCountAll(executorInitializer: (Problem) -> CspExecutor) =
             allResultsCounts.map { (n, expected) ->
-                DynamicTest.dynamicTest("for QueenProblem($n) gives $expected") {
+                DynamicTest.dynamicTest("for n=$n gives $expected") {
                     val problem = problemInitializer(n)
                     val executor = executorInitializer(problem)
                     val result = executor.countAll()
