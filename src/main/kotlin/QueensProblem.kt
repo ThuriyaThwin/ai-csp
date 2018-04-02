@@ -1,4 +1,4 @@
-data class QueensProblem(
+open class QueensProblem(
         override val numberOfVariables: Int,
         private val board: List<Variable> = List(numberOfVariables) {
             Variable(0, List(numberOfVariables) { it + 1 })
@@ -13,7 +13,9 @@ data class QueensProblem(
 
     override fun setVariable(variableIndex: Int, value: Int): Problem {
         val actualVariableIndex = actualVariableIndex(variableIndex)
-        val updatedBoard = board.copy { this[actualVariableIndex] = this[actualVariableIndex].copy(value = value) }
+        val updatedBoard = board.copy {
+            this[actualVariableIndex] = this[actualVariableIndex].copy(value = value)
+        }
         return copy(board = updatedBoard)
     }
 
@@ -21,8 +23,6 @@ data class QueensProblem(
         val actualVariableIndex = actualVariableIndex(variableIndex)
         return board[actualVariableIndex].domain
     }
-
-    private fun actualVariableIndex(variableIndex: Int) = numberOfVariables / 2 + (if (variableIndex % 2 == 0) 1 else -1) * (variableIndex + 1) / 2
 
     override fun areConstrainsSatisfied(variableIndex: Int, value: Int): Boolean {
         val actualVariableIndex = actualVariableIndex(variableIndex)
@@ -38,21 +38,18 @@ data class QueensProblem(
     override fun updateDomains(variableIndex: Int, value: Int): Problem {
         val actualVariableIndex = actualVariableIndex(variableIndex)
         val newBoard = board.copy {
-            var increment = 1
-            for (columnIndex in (actualVariableIndex + 1) until numberOfVariables) {
+            for (columnIndex in (0 until numberOfVariables) - actualVariableIndex) {
+                val columnsDistance = Math.abs(columnIndex - actualVariableIndex)
                 val oldDomain = this[columnIndex].domain
-                val newDomain = oldDomain - value - (value + increment) - (value - increment)
+                val newDomain = oldDomain - value - (value + columnsDistance) - (value - columnsDistance)
                 this[columnIndex] = this[columnIndex].copy(domain = newDomain)
-                ++increment
-            }
-            increment = 1
-            for (columnIndex in (actualVariableIndex - 1) downTo 0) {
-                val oldDomain = this[columnIndex].domain
-                val newDomain = oldDomain - value - (value + increment) - (value - increment)
-                this[columnIndex] = this[columnIndex].copy(domain = newDomain)
-                ++increment
             }
         }
         return QueensProblem(numberOfVariables, newBoard)
     }
+
+    protected open fun actualVariableIndex(variableIndex: Int) = variableIndex
+
+    private fun copy(numberOfVariables: Int = this.numberOfVariables, board: List<Variable> = this.board) =
+            QueensProblem(numberOfVariables, board)
 }
