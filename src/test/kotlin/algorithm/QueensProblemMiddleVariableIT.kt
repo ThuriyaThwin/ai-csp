@@ -4,7 +4,7 @@ import chooser.MiddleChooser
 import problem.Problem
 import problem.QueensProblem
 
-internal class QueensProblemMiddleIT : CountAllAbstractTest {
+internal class QueensProblemMiddleVariableIT : CountAllAbstractTest {
 
     override val problemInitializer: (n: Int) -> Problem = { QueensProblem(it, MiddleChooser(it)) }
 

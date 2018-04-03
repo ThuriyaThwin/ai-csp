@@ -6,9 +6,7 @@ import copy
 data class QueensProblem(
     override val numberOfVariables: Int,
     private val chooser: Chooser = Chooser(numberOfVariables),
-    private val board: List<Variable> = List(numberOfVariables) {
-        Variable(0, Domain(numberOfVariables))
-    }
+    private val board: List<Variable> = normalBoard(numberOfVariables)
 ) : Problem {
 
     override val currentResult: String
