@@ -1,8 +1,18 @@
+open class Chooser(protected val numberOfVariables: Int) {
+    open fun actualVariableIndex(variableIndex: Int) = variableIndex
+}
+
+class MiddleChooser(numberOfVariables: Int) : Chooser(numberOfVariables) {
+    override fun actualVariableIndex(variableIndex: Int) =
+        numberOfVariables / 2 + (if (variableIndex % 2 == 0) 1 else -1) * (variableIndex + 1) / 2
+}
+
 open class QueensProblem(
-        override val numberOfVariables: Int,
-        private val board: List<Variable> = List(numberOfVariables) {
-            Variable(0, List(numberOfVariables) { it + 1 })
-        }
+    override val numberOfVariables: Int,
+    private val chooser: Chooser = Chooser(numberOfVariables),
+    private val board: List<Variable> = List(numberOfVariables) {
+        Variable(0, List(numberOfVariables) { it + 1 })
+    }
 ) : Problem {
 
     override val currentResult: String
@@ -45,11 +55,14 @@ open class QueensProblem(
                 this[columnIndex] = this[columnIndex].copy(domain = newDomain)
             }
         }
-        return QueensProblem(numberOfVariables, newBoard)
+        return copy(board = newBoard)
     }
 
     protected open fun actualVariableIndex(variableIndex: Int) = variableIndex
 
-    private fun copy(numberOfVariables: Int = this.numberOfVariables, board: List<Variable> = this.board) =
-            QueensProblem(numberOfVariables, board)
+    private fun copy(
+        numberOfVariables: Int = this.numberOfVariables,
+        board: List<Variable> = this.board,
+        chooser: Chooser = this.chooser
+    ) = QueensProblem(numberOfVariables, chooser, board)
 }
