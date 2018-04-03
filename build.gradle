@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'no.tornado:tornadofx:1.7.15'
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_version"
     testImplementation "org.junit.jupiter:junit-jupiter-params:$junit_version"
     testImplementation 'org.assertj:assertj-core:3.9.0'

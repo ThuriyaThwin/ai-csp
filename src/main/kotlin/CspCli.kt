@@ -6,6 +6,10 @@ import problem.Problem
 import problem.QueensProblem
 import kotlin.system.measureTimeMillis
 
+fun main(args: Array<String>) {
+    CspCli().serveUser()
+}
+
 class CspCli {
 
     fun serveUser() {
