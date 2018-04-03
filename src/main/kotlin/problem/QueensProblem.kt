@@ -3,7 +3,7 @@ package problem
 import chooser.Chooser
 import copy
 
-open class QueensProblem(
+data class QueensProblem(
     override val numberOfVariables: Int,
     private val chooser: Chooser = Chooser(numberOfVariables),
     private val board: List<Variable> = List(numberOfVariables) {
@@ -18,7 +18,7 @@ open class QueensProblem(
         get() = board.any { it.domain.isEmpty() }
 
     override fun setVariable(variableIndex: Int, value: Int): Problem {
-        val actualVariableIndex = actualVariableIndex(variableIndex)
+        val actualVariableIndex = chooser.actualVariableIndex(variableIndex)
         val updatedBoard = board.copy {
             this[actualVariableIndex] = this[actualVariableIndex].copy(value = value)
         }
@@ -26,12 +26,12 @@ open class QueensProblem(
     }
 
     override fun domainOfVariable(variableIndex: Int): Domain {
-        val actualVariableIndex = actualVariableIndex(variableIndex)
+        val actualVariableIndex = chooser.actualVariableIndex(variableIndex)
         return board[actualVariableIndex].domain
     }
 
     override fun areConstrainsSatisfied(variableIndex: Int, value: Int): Boolean {
-        val actualVariableIndex = actualVariableIndex(variableIndex)
+        val actualVariableIndex = chooser.actualVariableIndex(variableIndex)
         for (otherColumn in (0 until numberOfVariables) - actualVariableIndex) {
             if (board[otherColumn].value != 0) {
                 if (board[otherColumn].value == value) return false
@@ -42,7 +42,7 @@ open class QueensProblem(
     }
 
     override fun updateDomains(variableIndex: Int, value: Int): Problem {
-        val actualVariableIndex = actualVariableIndex(variableIndex)
+        val actualVariableIndex = chooser.actualVariableIndex(variableIndex)
         val newBoard = board.copy {
             for (columnIndex in (0 until numberOfVariables) - actualVariableIndex) {
                 val columnsDistance = Math.abs(columnIndex - actualVariableIndex)
@@ -53,12 +53,4 @@ open class QueensProblem(
         }
         return copy(board = newBoard)
     }
-
-    protected open fun actualVariableIndex(variableIndex: Int) = variableIndex
-
-    private fun copy(
-        numberOfVariables: Int = this.numberOfVariables,
-        board: List<Variable> = this.board,
-        chooser: Chooser = this.chooser
-    ) = QueensProblem(numberOfVariables, chooser, board)
 }
