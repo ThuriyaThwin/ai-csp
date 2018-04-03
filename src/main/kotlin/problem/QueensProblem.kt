@@ -7,7 +7,7 @@ open class QueensProblem(
     override val numberOfVariables: Int,
     private val chooser: Chooser = Chooser(numberOfVariables),
     private val board: List<Variable> = List(numberOfVariables) {
-        Variable(0, List(numberOfVariables) { it + 1 })
+        Variable(0, Domain(numberOfVariables))
     }
 ) : Problem {
 

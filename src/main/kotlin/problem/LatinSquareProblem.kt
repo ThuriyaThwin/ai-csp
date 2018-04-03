@@ -3,8 +3,8 @@ package problem
 import copy
 
 class LatinSquareProblem(
-        private val n: Int,
-        private val square: List<List<Variable>> = List(n) { List(n) { Variable(0, List(n) { it + 1 }) } }
+    private val n: Int,
+    private val square: List<List<Variable>> = List(n) { List(n) { Variable(0, Domain(n)) } }
 ) : Problem {
 
     override val numberOfVariables = n * n
@@ -23,7 +23,8 @@ class LatinSquareProblem(
 
     override fun setVariable(variableIndex: Int, value: Int): Problem {
         val mutableSquare = square.map { it.toMutableList() }.toMutableList()
-        mutableSquare[variableIndex / n][variableIndex % n] = mutableSquare[variableIndex / n][variableIndex % n].copy(value = value)
+        mutableSquare[variableIndex / n][variableIndex % n] =
+                mutableSquare[variableIndex / n][variableIndex % n].copy(value = value)
         return LatinSquareProblem(n, mutableSquare)
     }
 
@@ -61,17 +62,17 @@ class LatinSquareProblem(
     }
 
     private fun newDomainsInRow(rowIndex: Int, columnIndex: Int, valueToRemove: Int) =
-            square[rowIndex].mapIndexed { index, element ->
-                if (index == columnIndex) element
-                else element.copy(domain = element.domain - valueToRemove)
-            }
+        square[rowIndex].mapIndexed { index, element ->
+            if (index == columnIndex) element
+            else element.copy(domain = element.domain - valueToRemove)
+        }
 
     private fun updateDomainsInColumn(rowIndex: Int, columnIndex: Int, value: Int, square: List<List<Variable>>) =
-            square.mapIndexed { index, list ->
-                if (index == rowIndex) list
-                else updateRow(list, columnIndex, value)
-            }
+        square.mapIndexed { index, list ->
+            if (index == rowIndex) list
+            else updateRow(list, columnIndex, value)
+        }
 
     private fun updateRow(row: List<Variable>, columnIndex: Int, value: Int): List<Variable> =
-            row.copy { this[columnIndex] = this[columnIndex].copy(domain = this[columnIndex].domain - value) }
+        row.copy { this[columnIndex] = this[columnIndex].copy(domain = this[columnIndex].domain - value) }
 }
