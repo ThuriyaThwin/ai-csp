@@ -1,3 +1,7 @@
+package algorithm
+
+import problem.Problem
+
 class ForwardCheckingExecutor(problem: Problem) : CspExecutor(problem) {
 
     override fun printName() {

@@ -1,3 +1,7 @@
+package problem
+
+import copy
+
 class LatinSquareProblem(
         private val n: Int,
         private val square: List<List<Variable>> = List(n) { List(n) { Variable(0, List(n) { it + 1 }) } }

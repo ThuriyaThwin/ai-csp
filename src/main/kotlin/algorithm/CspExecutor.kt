@@ -1,3 +1,7 @@
+package algorithm
+
+import problem.Problem
+
 abstract class CspExecutor(protected val problem: Problem) {
 
     var operationsCount: Int = 0

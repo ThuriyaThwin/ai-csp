@@ -1,3 +1,5 @@
+package problem
+
 interface Problem {
     val numberOfVariables: Int
     val currentResult: String

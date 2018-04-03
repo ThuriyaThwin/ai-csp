@@ -1,11 +1,7 @@
-open class Chooser(protected val numberOfVariables: Int) {
-    open fun actualVariableIndex(variableIndex: Int) = variableIndex
-}
+package problem
 
-class MiddleChooser(numberOfVariables: Int) : Chooser(numberOfVariables) {
-    override fun actualVariableIndex(variableIndex: Int) =
-        numberOfVariables / 2 + (if (variableIndex % 2 == 0) 1 else -1) * (variableIndex + 1) / 2
-}
+import chooser.Chooser
+import copy
 
 open class QueensProblem(
     override val numberOfVariables: Int,

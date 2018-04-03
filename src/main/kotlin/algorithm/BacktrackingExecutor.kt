@@ -1,3 +1,7 @@
+package algorithm
+
+import problem.Problem
+
 class BacktrackingExecutor(problem: Problem) : CspExecutor(problem) {
 
     override fun printName() {

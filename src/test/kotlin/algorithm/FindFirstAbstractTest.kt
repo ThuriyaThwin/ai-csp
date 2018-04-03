@@ -1,6 +1,9 @@
+package algorithm
+
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
+import problem.Problem
 
 internal interface FindFirstAbstractTest {
 

@@ -1,4 +1,9 @@
-internal class LatinSquareProblemIntegrationTest : CspAbstractTest()  {
+package algorithm
+
+import problem.LatinSquareProblem
+import problem.Problem
+
+internal class LatinSquareProblemIT : CspAbstractTest()  {
 
     override val problemInitializer: (Int) -> Problem = { LatinSquareProblem(it) }
 
