@@ -10,8 +10,8 @@ val allQueensResultsCounts = listOf(
     7 to 40,
     8 to 92,
     9 to 352,
-    10 to 724,
-    11 to 2680
-//            12 to 14200,
-//            13 to 73712
+    10 to 724
+//    11 to 2680,
+//    12 to 14200,
+//    13 to 73712
 )
