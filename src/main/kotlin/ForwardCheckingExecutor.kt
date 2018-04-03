@@ -17,9 +17,9 @@ class ForwardCheckingExecutor(problem: Problem) : CspExecutor(problem) {
     }
 
     override fun checkValue(variableIndex: Int, value: Int, problem: Problem) {
-        val newProblem = problem.updateDomains(variableIndex, value)
-        if (!problem.someDomainEmpty) {
-            count(variableIndex + 1, newProblem)
+        val updatedProblem = problem.updateDomains(variableIndex, value)
+        if (!updatedProblem.someDomainEmpty) {
+            count(variableIndex + 1, updatedProblem)
         }
         ++operationsCount
     }
