@@ -7,7 +7,7 @@ import problem.Problem
 import kotlin.system.measureTimeMillis
 
 abstract class ChartDataGenerator {
-    private val upperBound: Int = 15
+    private val upperBound: Int = 30
     abstract val problemInitializer: (n: Int) -> Problem
 
     fun measureTimeForAll() = printData {
