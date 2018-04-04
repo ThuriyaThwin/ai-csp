@@ -31,7 +31,10 @@ class CspCli {
         serveUser()
     }
 
-    private fun isFirstMode(mode: String) = mode[0] in arrayOf('f', 'F')
+    private fun isFirstMode(mode: String): Boolean {
+        val firstLetter = mode[0]
+        return firstLetter == 'f' || firstLetter == 'F'
+    }
 
     private fun problem(problemName: String, nString: String): Problem {
         val firstLetter = problemName[0]

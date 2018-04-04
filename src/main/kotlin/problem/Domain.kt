@@ -12,7 +12,11 @@ data class Domain(
 
     fun isEmpty() = list.isEmpty()
 
-    operator fun minus(value: Int) = copy(list = list - value)
+    operator fun minus(value: Int): Domain {
+        val newList = list.toMutableList()
+        newList.remove(value)
+        return copy(list = newList)
+    }
 
     operator fun iterator(): Iterator<Int> = iteratorInitializer(list)
 }
