@@ -1,5 +1,6 @@
-package chart
+package chart.square
 
+import chart.ChartDataGenerator
 import problem.LatinSquareProblem
 import problem.Problem
 

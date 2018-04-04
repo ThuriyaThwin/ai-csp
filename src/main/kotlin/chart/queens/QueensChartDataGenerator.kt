@@ -1,5 +1,6 @@
-package chart
+package chart.queens
 
+import chart.ChartDataGenerator
 import problem.Problem
 import problem.QueensProblem
 

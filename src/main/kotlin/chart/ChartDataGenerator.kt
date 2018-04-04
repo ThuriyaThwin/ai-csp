@@ -7,7 +7,7 @@ import problem.Problem
 import kotlin.system.measureTimeMillis
 
 abstract class ChartDataGenerator {
-    private val upperBound: Int = 30
+    protected val upperBound: Int = 30
     abstract val problemInitializer: (n: Int) -> Problem
 
     fun measureTimeForAll() = printData {
@@ -32,7 +32,7 @@ abstract class ChartDataGenerator {
         it.operationsCount
     }
 
-    private fun printData(measure: (CspExecutor) -> Number) {
+    protected open fun printData(measure: (CspExecutor) -> Number) {
         println("N,backtracking,forward checking")
         for (n in 1..upperBound) {
             val problem = problemInitializer(n)
